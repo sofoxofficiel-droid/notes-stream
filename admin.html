@@ -3,364 +3,181 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Notes de stream</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <title>Admin - Notestreamsfx</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root{
-      --bg:#fff7f0;--bg2:#ffe4d2;--surface:rgba(255,255,255,.88);--border:rgba(110,56,23,.12);
-      --text:#2a1810;--muted:#7c6053;--primary:#d6465d;--secondary:#ff8a3d;--gold:#ffcd6b;
-      --green:#1f9d63;--red:#d94a4a;--shadow:0 18px 42px rgba(188,88,42,.12);
-      --font:'Inter',sans-serif;--display:'Outfit',sans-serif;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      min-height:100vh;
-      background:radial-gradient(circle at top left, rgba(255,138,61,.25), transparent 28%),radial-gradient(circle at 85% 8%, rgba(214,70,93,.18), transparent 22%),linear-gradient(180deg,var(--bg),var(--bg2));
-      color:var(--text);font-family:var(--font);line-height:1.6;
-    }
-    .container{width:min(1240px,calc(100% - 2rem));margin:auto}
-    .panel{background:var(--surface);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:28px;box-shadow:var(--shadow)}
-    header{position:sticky;top:0;z-index:30;background:rgba(255,247,240,.8);backdrop-filter:blur(14px);border-bottom:1px solid rgba(110,56,23,.08)}
-    .nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;gap:1rem;flex-wrap:wrap}
-    .brand{display:flex;align-items:center;gap:.8rem}
-    .logo{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:grid;place-items:center;color:#fff;font-weight:800}
-    .brand h1{font:800 1.25rem/1 var(--display)}
-    .btn{min-height:44px;border-radius:999px;padding:0 1rem;border:1px solid var(--border);background:#fff;cursor:pointer;color:var(--text)}
-    .btn.primary{border:none;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
-    .btn.danger{border:1px solid rgba(217,74,74,.22);background:rgba(217,74,74,.08);color:var(--red)}
-    .btn.soft{border:1px solid rgba(255,205,107,.35);background:rgba(255,205,107,.18);color:#9c6700}
-    .hero,.layout,.stats-grid,.grid-form,.game-grid{display:grid;gap:1rem}
-    .hero{grid-template-columns:1.1fr .9fr;padding:2rem 0 1.2rem}
-    .card{padding:1.25rem}
-    .eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .8rem;border-radius:999px;background:rgba(255,138,61,.12);color:#c24d09;font-weight:700;font-size:.9rem;margin-bottom:1rem}
-    .hero-title{font:800 clamp(2rem,4vw,3.2rem)/.98 var(--display);max-width:13ch;margin-bottom:1rem}
-    .meta{color:var(--muted)}
-    .stats-grid{grid-template-columns:repeat(2,1fr)}
-    .stat{background:#fff;border:1px solid var(--border);border-radius:22px;padding:1rem}
-    .stat strong{display:block;font:800 2rem/1 var(--display);margin-top:.25rem}
-    .status{padding:1rem 1.1rem;border-radius:20px;border:1px solid var(--border);background:#fff}
-    .info{color:#226cc3}.ok{color:var(--green)}.error{color:var(--red)}
-    .layout{grid-template-columns:340px minmax(0,1fr);padding-bottom:3rem;align-items:start}
-    .summary{position:sticky;top:92px;padding:1.15rem;height:max-content}
-    .summary-list{list-style:none;display:grid;gap:.8rem;margin-top:1rem}
-    .summary-link{display:flex;justify-content:space-between;align-items:center;gap:.75rem;padding:.9rem 1rem;border-radius:18px;border:1px solid var(--border);background:#fff;text-decoration:none;color:inherit}
-    .content{display:grid;gap:1rem}
-    .toolbar{padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-    .search{display:flex;align-items:center;gap:.75rem;min-height:52px;border:1px solid var(--border);border-radius:999px;background:#fff;padding:0 1rem;flex:1}
-    .search input,.field input,.field textarea{width:100%;border:none;outline:none;background:transparent;color:inherit}
-    .grid-form{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .field{display:grid;gap:.45rem}
-    .field.full{grid-column:1/-1}
-    .field input,.field textarea{background:#fff;border:1px solid var(--border);border-radius:20px;padding:1rem}
-    .field textarea{min-height:110px;resize:vertical}
-    .games{display:grid;gap:1rem}
-    .game-card{padding:1.25rem;scroll-margin-top:88px}
-    .game-grid{grid-template-columns:240px minmax(0,1fr)}
-    .cover{aspect-ratio:3/4;overflow:hidden;border-radius:24px;background:linear-gradient(160deg,var(--primary),var(--secondary));border:1px solid rgba(255,255,255,.6)}
-    .cover img{width:100%;height:100%;object-fit:cover}
-    .cover-fallback{width:100%;height:100%;display:grid;place-items:center;padding:1rem;text-align:center;color:#fff;font:800 1.4rem/1.1 var(--display)}
-    .game-head,.tag-row,.comment-head,.status-stack,.auth-row,.comment-actions{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:space-between;align-items:center}
-    .score-card{padding:1rem 1.1rem;border-radius:20px;background:linear-gradient(135deg,rgba(214,70,93,.12),rgba(255,138,61,.16));border:1px solid rgba(214,70,93,.14);min-width:130px}
-    .score-card strong{display:block;font:800 2rem/1 var(--display)}
-    .tag{padding:.38rem .75rem;border-radius:999px;background:#fff;border:1px solid var(--border);font-size:.82rem}
-    .comments{display:grid;gap:1rem;border-top:1px solid rgba(110,56,23,.09);margin-top:1rem;padding-top:1rem}
-    .comment{padding:1rem;border-radius:20px;background:#fff;border:1px solid var(--border)}
-    .comment.hidden-comment{opacity:.55;border-style:dashed}
-    .comment.pinned{border-color:rgba(255,205,107,.45);background:linear-gradient(180deg,rgba(255,205,107,.18),rgba(255,255,255,.7))}
-    .badge{padding:.28rem .6rem;border-radius:999px;font-size:.76rem}
-    .visible{background:rgba(31,157,99,.12);color:var(--green)}
-    .hidden-badge{background:rgba(217,74,74,.12);color:var(--red)}
-    .pinned-badge{background:rgba(255,205,107,.18);color:#b87400}
-    @media (max-width:1100px){.hero,.layout,.game-grid,.grid-form{grid-template-columns:1fr}.summary{position:static}}
-    @media (max-width:700px){.stats-grid{grid-template-columns:1fr}.toolbar{flex-direction:column;align-items:stretch}}
+    body{font-family:Arial,sans-serif;background:#111;color:#fff;margin:0;padding:24px}
+    .box{max-width:1100px;margin:auto;background:#1b1b1b;padding:20px;border-radius:16px}
+    input,button,textarea{width:100%;padding:12px;margin:6px 0 12px;border-radius:10px;border:1px solid #444;background:#222;color:#fff}
+    button{cursor:pointer;background:#ff4d6d;border:none;font-weight:bold}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .card{background:#222;padding:14px;border-radius:12px;margin:12px 0}
+    .meta{color:#bbb;font-size:14px}
+    .comment{background:#2a2a2a;padding:10px;border-radius:10px;margin-top:8px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .actions button{width:auto;padding:8px 10px}
+    .danger{background:#d9534f}
+    .ok{background:#28a745}
+    .muted{opacity:.6}
   </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand">
-        <div class="logo">A</div>
-        <div>
-          <h1>Admin</h1>
-          <div class="meta">Gestion des jeux et commentaires</div>
-        </div>
+  <div class="box">
+    <h1>Admin Notestreamsfx</h1>
+    <p class="meta" id="status">Chargement...</p>
+
+    <div class="row">
+      <div>
+        <h2>Connexion admin</h2>
+        <input id="email" type="email" placeholder="Email admin" />
+        <input id="password" type="password" placeholder="Mot de passe" />
+        <button id="loginBtn">Se connecter</button>
+        <button id="logoutBtn">Se déconnecter</button>
       </div>
-      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
-        <button class="btn soft" id="refreshBtn" type="button">Rafraîchir</button>
-        <button class="btn danger" id="clearStatusBtn" type="button">Vider statut</button>
+
+      <div>
+        <h2>Ajouter un commentaire</h2>
+        <input id="gameId" type="number" placeholder="Game ID" />
+        <input id="author" type="text" placeholder="Pseudo" />
+        <textarea id="text" rows="5" placeholder="Commentaire..."></textarea>
+        <button id="addCommentBtn">Ajouter commentaire</button>
       </div>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <article class="panel card">
-        <span class="eyebrow">Back-office stream</span>
-        <h2 class="hero-title">Gère les jeux, modère les commentaires, et garde une page propre pour la commu.</h2>
-        <p class="meta">Cette page te permet de voir toutes les fiches, modifier les jeux, masquer les spams, mettre en avant un message et supprimer ce qui dérange.</p>
-      </article>
-      <aside class="panel card">
-        <div class="stats-grid">
-          <div class="stat"><small>Jeux</small><strong id="totalGames">0</strong></div>
-          <div class="stat"><small>Votes</small><strong id="totalVotes">0</strong></div>
-          <div class="stat"><small>Commentaires</small><strong id="totalComments">0</strong></div>
-          <div class="stat"><small>Mis en avant</small><strong id="pinnedComments">0</strong></div>
-        </div>
-      </aside>
-    </section>
+    <h2>Jeux</h2>
+    <button id="refreshBtn">Rafraîchir</button>
+    <div id="games"></div>
 
-    <section class="panel" style="padding:1rem 1.2rem;margin-bottom:1rem">
-      <div class="status info" id="status">Chargement...</div>
-    </section>
-
-    <section class="panel card" style="margin-bottom:1rem">
-      <h2>Ajouter un jeu</h2>
-      <p class="meta" style="margin-bottom:1rem">Tu peux ajouter une nouvelle fiche et un commentaire d’ouverture.</p>
-      <form id="gameForm" class="grid-form">
-        <div class="field">
-          <label>Nom du jeu</label>
-          <input id="gameName" type="text" required>
-        </div>
-        <div class="field">
-          <label>Genre / tag</label>
-          <input id="gameGenre" type="text">
-        </div>
-        <div class="field full">
-          <label>Image via URL</label>
-          <input id="gameImageUrl" type="url" placeholder="https://...">
-        </div>
-        <div class="field full">
-          <label>Commentaire d’ouverture</label>
-          <textarea id="gameIntroComment" placeholder="Message d’intro pour la fiche..."></textarea>
-        </div>
-        <div class="field full">
-          <button class="btn primary" type="submit">Ajouter le jeu</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="layout">
-      <aside class="panel summary">
-        <h2>Sommaire</h2>
-        <ul class="summary-list" id="summaryList"></ul>
-      </aside>
-
-      <section class="content">
-        <section class="panel toolbar">
-          <label class="search" for="searchInput">
-            <span>🔎</span>
-            <input id="searchInput" type="search" placeholder="Chercher un jeu, un genre, un commentaire...">
-          </label>
-        </section>
-
-        <div class="games" id="gamesList"></div>
-      </section>
-    </section>
-  </main>
+    <h2>Commentaires</h2>
+    <div id="comments"></div>
+  </div>
 
   <script>
     const SUPABASE_URL = "https://dpzorxmdblysdbebqkdw.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_nozWqfhiNgwyXnYLMngXHQ_KUvRgtZ6";
-    const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+    const SUPABASE_ANON_KEY = "sb_publishable_nozWqfhiNgwyXnYLMngXHQ_KUvRgtZ6";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
 
-    let state = { games: [], comments: [], ratings: [] };
+    let gamesData = [];
+    let commentsData = [];
 
-    function esc(t){return String(t??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));}
-    function avg(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;}
-    function fmt(iso){return new Intl.DateTimeFormat('fr-FR',{dateStyle:'medium',timeStyle:'short'}).format(new Date(iso));}
-    function slugify(name){return name.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');}
+    const statusEl = document.getElementById('status');
+    const gamesEl = document.getElementById('games');
+    const commentsEl = document.getElementById('comments');
 
-    function setStatus(t, tone='info'){
-      const el = document.getElementById('status');
-      el.className = 'status ' + tone;
-      el.textContent = t;
+    function setStatus(msg, ok=false) {
+      statusEl.textContent = msg;
+      statusEl.style.color = ok ? '#7CFF9B' : '#ffb3b3';
     }
 
-    function grouped(){
-      return state.games.map(g=>({
-        ...g,
-        ratings: state.ratings.filter(r=>r.game_id===g.id),
-        comments: state.comments.filter(c=>c.game_id===g.id)
-      }));
+    async function checkSession() {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) return setStatus('Erreur session: ' + error.message);
+      setStatus(data.session ? 'Connecté' : 'Déconnecté');
     }
 
-    function sortedComments(c){
-      return [...c].sort((a,b)=>a.pinned!==b.pinned?(a.pinned?-1:1):new Date(b.created_at)-new Date(a.created_at));
+    async function login() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) return setStatus('Connexion refusée: ' + error.message);
+      setStatus('Connexion réussie', true);
+      await loadAll();
     }
 
-    function summaryMarkup(g){
-      const s=avg(g.ratings);
-      return `<li><a class="summary-link" href="#${g.slug}"><span>${esc(g.name)}</span><strong>${s.toFixed(1)}/10</strong></a></li>`;
+    async function logout() {
+      const { error } = await supabase.auth.signOut();
+      if (error) return setStatus('Déconnexion impossible: ' + error.message);
+      setStatus('Déconnecté');
     }
 
-    function commentControls(game, c){
-      return `<div class="comment-actions" style="margin-top:.9rem">
-        <button class="btn" data-action="toggle" data-game-id="${game.id}" data-comment-id="${c.id}" type="button">${c.hidden?'Réafficher':'Masquer'}</button>
-        <button class="btn soft" data-action="pin" data-game-id="${game.id}" data-comment-id="${c.id}" type="button">${c.pinned?'Retirer':'Mettre en avant'}</button>
-        <button class="btn danger" data-action="delete" data-game-id="${game.id}" data-comment-id="${c.id}" type="button">Supprimer</button>
-      </div>`;
-    }
-
-    function commentCard(g,c){
-      return `<article class="comment ${c.hidden?'hidden-comment':''} ${c.pinned?'pinned':''}">
-        <div class="comment-head">
-          <div><strong>${esc(c.author)}</strong><div class="meta">${fmt(c.created_at)}</div></div>
-          <div class="status-stack">
-            <span class="badge ${c.hidden?'hidden-badge':'visible'}">${c.hidden?'Masqué':'Visible'}</span>
-            ${c.pinned?'<span class="badge pinned-badge">Mis en avant</span>':''}
-          </div>
-        </div>
-        <p>${esc(c.text)}</p>
-        ${commentControls(g,c)}
-      </article>`;
-    }
-
-    function gameMarkup(g){
-      const s=avg(g.ratings);
-      return `<article class="panel game-card" id="${g.slug}">
-        <div class="game-grid">
-          <div class="cover">${g.image_url?`<img src="${g.image_url}" alt="${esc(g.name)}">`:`<div class="cover-fallback">${esc(g.name)}</div>`}</div>
-          <div>
-            <div class="game-head">
-              <div><h3>${esc(g.name)}</h3><p class="meta">${esc(g.genre||'Découverte')}</p></div>
-              <div class="score-card"><strong>${s.toFixed(1)}/10</strong><span class="meta">${g.ratings.length} votes</span></div>
-            </div>
-            <div class="tag-row">
-              <span class="tag">${esc(g.genre||'Découverte')}</span>
-              <span class="tag">${g.comments.length} commentaire(s)</span>
-              <span class="tag">ID: ${g.id}</span>
-            </div>
-            <section class="comments">
-              ${g.comments.length?sortedComments(g.comments).map(c=>commentCard(g,c)).join(''):'<div class="comment">Pas encore de commentaire.</div>'}
-            </section>
-          </div>
-        </div>
-      </article>`;
-    }
-
-    async function loadAll(){
-      if(!sb){
-        setStatus('Supabase non chargé, impossible de synchroniser.', 'error');
-        return;
-      }
-      const [{data:games,error:eg},{data:comments,error:ec},{data:ratings,error:er}] = await Promise.all([
-        sb.from('games').select('*').order('created_at', { ascending: false }),
-        sb.from('comments').select('*').order('created_at', { ascending: false }),
-        sb.from('ratings').select('*').order('created_at', { ascending: false }),
+    async function loadAll() {
+      setStatus('Chargement des données...');
+      const [gamesRes, commentsRes] = await Promise.all([
+        supabase.from('games').select('*').order('created_at', { ascending: false }),
+        supabase.from('comments').select('*').order('created_at', { ascending: false })
       ]);
-      if(eg || ec || er){
-        console.error(eg, ec, er);
-        setStatus('Erreur au chargement Supabase.', 'error');
-        return;
-      }
-      state = { games: games || [], comments: comments || [], ratings: ratings || [] };
+
+      if (gamesRes.error) return setStatus('Erreur games: ' + gamesRes.error.message);
+      if (commentsRes.error) return setStatus('Erreur comments: ' + commentsRes.error.message);
+
+      gamesData = gamesRes.data || [];
+      commentsData = commentsRes.data || [];
       render();
-      setStatus('Données synchronisées avec Supabase.', 'ok');
+      setStatus('Données chargées', true);
     }
 
-    async function addGame(name, genre, image_url, intro){
-      const slug = slugify(name);
-      const { data, error } = await sb
-        .from('games')
-        .insert([{ name, slug, genre: genre || null, image_url: image_url || null }], { returning: 'minimal' })
-        .select()
-        .single();
+    function render() {
+      gamesEl.innerHTML = gamesData.map(g => `
+        <div class="card">
+          <strong>${g.name || 'Sans nom'}</strong>
+          <div class="meta">ID: ${g.id} | slug: ${g.slug || '-'}</div>
+          <div class="meta">${g.genre || ''}</div>
+        </div>
+      `).join('');
 
-      if(error) throw error;
-
-      if(intro && intro.trim()){
-        await sb.from('comments').insert([{
-          game_id: data.id,
-          author: 'Admin',
-          text: intro.trim(),
-          hidden: false,
-          pinned: true
-        }], { returning: 'minimal' });
-      }
+      commentsEl.innerHTML = commentsData.map(c => `
+        <div class="card ${c.hidden ? 'muted' : ''}">
+          <div><strong>#${c.id}</strong> — ${c.author || 'Anonyme'}</div>
+          <div class="meta">Game ID: ${c.game_id} | ${c.hidden ? 'Masqué' : 'Visible'} ${c.pinned ? '| Mis en avant' : ''}</div>
+          <div class="comment">${c.text || ''}</div>
+          <div class="actions">
+            <button class="ok" onclick="toggleHide(${c.id}, ${c.hidden ? 'true' : 'false'})">${c.hidden ? 'Réafficher' : 'Masquer'}</button>
+            <button onclick="togglePin(${c.id}, ${c.pinned ? 'true' : 'false'})">${c.pinned ? 'Retirer pin' : 'Mettre en avant'}</button>
+            <button class="danger" onclick="deleteComment(${c.id})">Supprimer</button>
+          </div>
+        </div>
+      `).join('');
     }
 
-    async function updateComment(commentId, updates){
-      const { error } = await sb.from('comments').update(updates).eq('id', commentId).select();
-      if(error) throw error;
+    async function addComment() {
+      const game_id = Number(document.getElementById('gameId').value);
+      const author = document.getElementById('author').value.trim();
+      const text = document.getElementById('text').value.trim();
+      if (!game_id || !author || !text) return setStatus('Remplis Game ID, pseudo et commentaire.');
+
+      const { error } = await supabase.from('comments').insert([{
+        game_id, author, text, hidden: false, pinned: false
+      }], { returning: 'minimal' });
+
+      if (error) return setStatus('Ajout commentaire refusé: ' + error.message);
+      setStatus('Commentaire ajouté', true);
+      document.getElementById('text').value = '';
+      await loadAll();
     }
 
-    async function deleteComment(commentId){
-      const { error } = await sb.from('comments').delete().eq('id', commentId).select();
-      if(error) throw error;
+    async function toggleHide(id, hidden) {
+      const { error } = await supabase.from('comments').update({ hidden: !hidden }).eq('id', id).select();
+      if (error) return setStatus('Erreur masquage: ' + error.message);
+      await loadAll();
     }
 
-    async function toggleComment(commentId){
-      const c = state.comments.find(x=>x.id===commentId);
-      if(!c) return;
-      await updateComment(commentId, { hidden: !c.hidden, pinned: !c.hidden ? false : c.pinned });
+    async function togglePin(id, pinned) {
+      const { error } = await supabase.from('comments').update({ pinned: !pinned }).eq('id', id).select();
+      if (error) return setStatus('Erreur pin: ' + error.message);
+      await loadAll();
     }
 
-    async function pinComment(gameId, commentId){
-      const related = state.comments.filter(c=>c.game_id===gameId);
-      for(const c of related){
-        await updateComment(c.id, c.id===commentId ? { pinned: !c.pinned, hidden: false } : { pinned: false });
-      }
+    async function deleteComment(id) {
+      const { error } = await supabase.from('comments').delete().eq('id', id).select();
+      if (error) return setStatus('Erreur suppression: ' + error.message);
+      await loadAll();
     }
 
-    async function deleteGame(gameId){
-      const { error } = await sb.from('games').delete().eq('id', gameId).select();
-      if(error) throw error;
-    }
-
-    function render(){
-      const q=document.getElementById('searchInput').value.trim().toLowerCase();
-      const gs=grouped().filter(g=>`${g.name} ${g.genre||''}`.toLowerCase().includes(q));
-      document.getElementById('summaryList').innerHTML=gs.map(summaryMarkup).join('');
-      document.getElementById('gamesList').innerHTML=gs.map(gameMarkup).join('');
-      document.getElementById('totalGames').textContent=state.games.length;
-      document.getElementById('totalVotes').textContent=state.ratings.length;
-      document.getElementById('totalComments').textContent=state.comments.length;
-      document.getElementById('pinnedComments').textContent=state.comments.filter(c=>c.pinned&&!c.hidden).length;
-    }
-
-    document.getElementById('searchInput').addEventListener('input', render);
+    document.getElementById('loginBtn').addEventListener('click', login);
+    document.getElementById('logoutBtn').addEventListener('click', logout);
     document.getElementById('refreshBtn').addEventListener('click', loadAll);
-    document.getElementById('clearStatusBtn').addEventListener('click', ()=>setStatus('Statut vidé.', 'info'));
+    document.getElementById('addCommentBtn').addEventListener('click', addComment);
 
-    document.getElementById('gameForm').addEventListener('submit', async e=>{
-      e.preventDefault();
-      try{
-        const name=document.getElementById('gameName').value.trim();
-        const genre=document.getElementById('gameGenre').value.trim();
-        const image_url=document.getElementById('gameImageUrl').value.trim();
-        const intro=document.getElementById('gameIntroComment').value.trim();
-        if(!name) return;
-        await addGame(name, genre, image_url, intro);
-        e.target.reset();
-        await loadAll();
-        setStatus('Jeu ajouté et synchronisé.', 'ok');
-      }catch(err){
-        console.error(err);
-        setStatus('Erreur ajout jeu: '+err.message, 'error');
-      }
-    });
+    window.toggleHide = toggleHide;
+    window.togglePin = togglePin;
+    window.deleteComment = deleteComment;
 
-    document.addEventListener('click', async e=>{
-      const btn=e.target.closest('[data-action]');
-      if(!btn) return;
-      const action=btn.dataset.action;
-      const commentId=Number(btn.dataset.commentId);
-      const gameId=Number(btn.dataset.gameId);
-      try{
-        if(action==='toggle') await toggleComment(commentId);
-        if(action==='pin') await pinComment(gameId, commentId);
-        if(action==='delete') await deleteComment(commentId);
-        await loadAll();
-        setStatus('Action enregistrée.', 'ok');
-      }catch(err){
-        console.error(err);
-        setStatus('Erreur admin: '+err.message, 'error');
-      }
-    });
-
-    loadAll();
+    (async () => {
+      await checkSession();
+      await loadAll();
+    })();
   </script>
 </body>
 </html>
