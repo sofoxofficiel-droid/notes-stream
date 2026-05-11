@@ -9,31 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#fff7f0;
-      --bg2:#ffe4d2;
-      --surface:rgba(255,255,255,.88);
-      --border:rgba(110,56,23,.12);
-      --text:#2a1810;
-      --muted:#7c6053;
-      --primary:#d6465d;
-      --secondary:#ff8a3d;
-      --gold:#ffcd6b;
-      --green:#1f9d63;
-      --red:#d94a4a;
-      --shadow:0 18px 42px rgba(188,88,42,.12);
-      --font:'Inter',sans-serif;
-      --display:'Outfit',sans-serif;
+      --bg:#fff7f0;--bg2:#ffe4d2;--surface:rgba(255,255,255,.88);--border:rgba(110,56,23,.12);
+      --text:#2a1810;--muted:#7c6053;--primary:#d6465d;--secondary:#ff8a3d;--gold:#ffcd6b;
+      --green:#1f9d63;--red:#d94a4a;--shadow:0 18px 42px rgba(188,88,42,.12);
+      --font:'Inter',sans-serif;--display:'Outfit',sans-serif;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       min-height:100vh;
-      background:
-        radial-gradient(circle at top left, rgba(255,138,61,.25), transparent 28%),
-        radial-gradient(circle at 85% 8%, rgba(214,70,93,.18), transparent 22%),
-        linear-gradient(180deg,var(--bg),var(--bg2));
-      color:var(--text);
-      font-family:var(--font);
-      line-height:1.6;
+      background:radial-gradient(circle at top left, rgba(255,138,61,.25), transparent 28%),radial-gradient(circle at 85% 8%, rgba(214,70,93,.18), transparent 22%),linear-gradient(180deg,var(--bg),var(--bg2));
+      color:var(--text);font-family:var(--font);line-height:1.6;
     }
     .container{width:min(1240px,calc(100% - 2rem));margin:auto}
     .panel{background:var(--surface);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:28px;box-shadow:var(--shadow)}
@@ -70,15 +55,13 @@
     .field.full{grid-column:1/-1}
     .field input,.field textarea{background:#fff;border:1px solid var(--border);border-radius:20px;padding:1rem}
     .field textarea{min-height:110px;resize:vertical}
-    .upload-preview{width:min(220px,100%);aspect-ratio:3/4;border-radius:22px;overflow:hidden;border:1px solid var(--border);display:grid;place-items:center;background:linear-gradient(135deg,rgba(214,70,93,.12),rgba(255,138,61,.14))}
-    .upload-preview img{width:100%;height:100%;object-fit:cover}
     .games{display:grid;gap:1rem}
     .game-card{padding:1.25rem;scroll-margin-top:88px}
     .game-grid{grid-template-columns:240px minmax(0,1fr)}
     .cover{aspect-ratio:3/4;overflow:hidden;border-radius:24px;background:linear-gradient(160deg,var(--primary),var(--secondary));border:1px solid rgba(255,255,255,.6)}
     .cover img{width:100%;height:100%;object-fit:cover}
     .cover-fallback{width:100%;height:100%;display:grid;place-items:center;padding:1rem;text-align:center;color:#fff;font:800 1.4rem/1.1 var(--display)}
-    .game-head,.tag-row,.comment-head,.status-stack,.auth-row,.stars,.vote-head,.comment-actions{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:space-between;align-items:center}
+    .game-head,.tag-row,.comment-head,.status-stack,.auth-row,.comment-actions{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:space-between;align-items:center}
     .score-card{padding:1rem 1.1rem;border-radius:20px;background:linear-gradient(135deg,rgba(214,70,93,.12),rgba(255,138,61,.16));border:1px solid rgba(214,70,93,.14);min-width:130px}
     .score-card strong{display:block;font:800 2rem/1 var(--display)}
     .tag{padding:.38rem .75rem;border-radius:999px;background:#fff;border:1px solid var(--border);font-size:.82rem}
@@ -90,31 +73,23 @@
     .visible{background:rgba(31,157,99,.12);color:var(--green)}
     .hidden-badge{background:rgba(217,74,74,.12);color:var(--red)}
     .pinned-badge{background:rgba(255,205,107,.18);color:#b87400}
-    .vote-box{padding:1rem 1.1rem;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,247,240,.95));border:1px solid var(--border);display:grid;gap:.8rem;box-shadow:0 10px 26px rgba(188,88,42,.08)}
-    .vote-chip{padding:.35rem .7rem;border-radius:999px;background:rgba(214,70,93,.10);color:#b93d53;font-weight:700;font-size:.8rem}
-    .stars{justify-content:center}
-    .star{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,179,62,.22);background:linear-gradient(180deg,#fff,#fff6e6);cursor:pointer;transition:transform .14s ease, box-shadow .14s ease, background .14s ease, color .14s ease;color:#d1b08e;font-size:1.2rem;box-shadow:0 6px 16px rgba(188,88,42,.06)}
-    .star.active{color:#ffb33e;background:linear-gradient(180deg,#fff8e8,#ffe08a);box-shadow:0 8px 18px rgba(255,179,62,.25);border-color:rgba(255,179,62,.35)}
-    .star:hover{transform:translateY(-2px) scale(1.04)}
-    .vote-msg{min-height:24px;font-weight:700;color:var(--green);text-align:center}
-    .comment-form{display:grid;gap:.7rem;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(110,56,23,.09)}
-    .comment-form .row{display:grid;grid-template-columns:1fr auto;gap:.7rem;align-items:start}
-    .comment-form input,.comment-form textarea{width:100%;border:1px solid var(--border);border-radius:18px;padding:.95rem 1rem;background:#fff;font:inherit;outline:none}
-    .comment-form textarea{min-height:96px;resize:vertical}
-    .comment-form button{min-height:48px;border:none;border-radius:999px;padding:0 1.1rem;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;font-weight:800;cursor:pointer}
-    .comment-msg{min-height:22px;font-weight:700;color:var(--green)}
-    .locked{opacity:.96}
     @media (max-width:1100px){.hero,.layout,.game-grid,.grid-form{grid-template-columns:1fr}.summary{position:static}}
-    @media (max-width:700px){.stats-grid{grid-template-columns:1fr}.toolbar{flex-direction:column;align-items:stretch}.stars{justify-content:flex-start}.comment-form .row{grid-template-columns:1fr}}
+    @media (max-width:700px){.stats-grid{grid-template-columns:1fr}.toolbar{flex-direction:column;align-items:stretch}}
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
-      <div class="brand"><div class="logo">A</div><div><h1>Admin</h1><div class="meta">Modération des jeux et commentaires</div></div></div>
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>Admin</h1>
+          <div class="meta">Gestion des jeux et commentaires</div>
+        </div>
+      </div>
       <div style="display:flex;gap:.75rem;flex-wrap:wrap">
         <button class="btn soft" id="refreshBtn" type="button">Rafraîchir</button>
-        <button class="btn danger" id="clearVotesBtn" type="button">Réinitialiser votes</button>
+        <button class="btn danger" id="clearStatusBtn" type="button">Vider statut</button>
       </div>
     </div>
   </header>
@@ -142,7 +117,7 @@
 
     <section class="panel card" style="margin-bottom:1rem">
       <h2>Ajouter un jeu</h2>
-      <p class="meta" style="margin-bottom:1rem">Tu peux ajouter une nouvelle fiche, une image, et un commentaire d’ouverture si besoin.</p>
+      <p class="meta" style="margin-bottom:1rem">Tu peux ajouter une nouvelle fiche et un commentaire d’ouverture.</p>
       <form id="gameForm" class="grid-form">
         <div class="field">
           <label>Nom du jeu</label>
@@ -186,32 +161,34 @@
   </main>
 
   <script>
-    let state={games:[],comments:[],ratings:[]};
+    const SUPABASE_URL = "https://dpzorxmdblysdbebqkdw.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_nozWqfhiNgwyXnYLMngXHQ_KUvRgtZ6";
+    const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-    function esc(t){return String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    let state = { games: [], comments: [], ratings: [] };
+
+    function esc(t){return String(t??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));}
     function avg(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;}
     function fmt(iso){return new Intl.DateTimeFormat('fr-FR',{dateStyle:'medium',timeStyle:'short'}).format(new Date(iso));}
-    function slugify(name){return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');}
+    function slugify(name){return name.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');}
 
-    function demoData(){
-      return {
-        games:[
-          {id:1,name:'Elden Ring',slug:'elden-ring',genre:'Souls-Like',image_url:'',created_at:new Date().toISOString()},
-          {id:2,name:'Sekiro',slug:'sekiro',genre:'Action',image_url:'',created_at:new Date().toISOString()}
-        ],
-        ratings:[
-          {id:1,game_id:1,score:9},{id:2,game_id:1,score:10},{id:3,game_id:2,score:8},{id:4,game_id:2,score:9}
-        ],
-        comments:[
-          {id:1,game_id:1,author:'Soso',text:'Très bon jeu',created_at:new Date().toISOString(),hidden:false,pinned:true},
-          {id:2,game_id:1,author:'Viewer',text:'Pas de spam ici',created_at:new Date().toISOString(),hidden:false,pinned:false},
-          {id:3,game_id:2,author:'Chat',text:'Mode furtif de fou',created_at:new Date().toISOString(),hidden:false,pinned:false}
-        ]
-      };
+    function setStatus(t, tone='info'){
+      const el = document.getElementById('status');
+      el.className = 'status ' + tone;
+      el.textContent = t;
     }
 
-    function grouped(){return state.games.map(g=>({...g,ratings:state.ratings.filter(r=>r.game_id===g.id),comments:state.comments.filter(c=>c.game_id===g.id)}));}
-    function sortedComments(c){return [...c].sort((a,b)=>a.pinned!==b.pinned?(a.pinned?-1:1):new Date(b.created_at)-new Date(a.created_at));}
+    function grouped(){
+      return state.games.map(g=>({
+        ...g,
+        ratings: state.ratings.filter(r=>r.game_id===g.id),
+        comments: state.comments.filter(c=>c.game_id===g.id)
+      }));
+    }
+
+    function sortedComments(c){
+      return [...c].sort((a,b)=>a.pinned!==b.pinned?(a.pinned?-1:1):new Date(b.created_at)-new Date(a.created_at));
+    }
 
     function summaryMarkup(g){
       const s=avg(g.ratings);
@@ -219,7 +196,7 @@
     }
 
     function commentControls(game, c){
-      return `<div class="comment-actions">
+      return `<div class="comment-actions" style="margin-top:.9rem">
         <button class="btn" data-action="toggle" data-game-id="${game.id}" data-comment-id="${c.id}" type="button">${c.hidden?'Réafficher':'Masquer'}</button>
         <button class="btn soft" data-action="pin" data-game-id="${game.id}" data-comment-id="${c.id}" type="button">${c.pinned?'Retirer':'Mettre en avant'}</button>
         <button class="btn danger" data-action="delete" data-game-id="${game.id}" data-comment-id="${c.id}" type="button">Supprimer</button>
@@ -263,52 +240,73 @@
       </article>`;
     }
 
-    function addGame(name, genre, image_url, intro){
-      const id=Date.now();
-      const slug=slugify(name);
-      const game={id,name,slug,genre,image_url,created_at:new Date().toISOString()};
-      state.games.unshift(game);
-      if(intro.trim()){
-        state.comments.unshift({id:id+1,game_id:id,author:'Admin',text:intro.trim(),created_at:new Date().toISOString(),hidden:false,pinned:true});
+    async function loadAll(){
+      if(!sb){
+        setStatus('Supabase non chargé, impossible de synchroniser.', 'error');
+        return;
       }
+      const [{data:games,error:eg},{data:comments,error:ec},{data:ratings,error:er}] = await Promise.all([
+        sb.from('games').select('*').order('created_at', { ascending: false }),
+        sb.from('comments').select('*').order('created_at', { ascending: false }),
+        sb.from('ratings').select('*').order('created_at', { ascending: false }),
+      ]);
+      if(eg || ec || er){
+        console.error(eg, ec, er);
+        setStatus('Erreur au chargement Supabase.', 'error');
+        return;
+      }
+      state = { games: games || [], comments: comments || [], ratings: ratings || [] };
       render();
+      setStatus('Données synchronisées avec Supabase.', 'ok');
     }
 
-    function updateComment(commentId, updates){
-      state.comments=state.comments.map(c=>c.id==commentId?{...c,...updates}:c);
-      render();
+    async function addGame(name, genre, image_url, intro){
+      const slug = slugify(name);
+      const { data, error } = await sb
+        .from('games')
+        .insert([{ name, slug, genre: genre || null, image_url: image_url || null }], { returning: 'minimal' })
+        .select()
+        .single();
+
+      if(error) throw error;
+
+      if(intro && intro.trim()){
+        await sb.from('comments').insert([{
+          game_id: data.id,
+          author: 'Admin',
+          text: intro.trim(),
+          hidden: false,
+          pinned: true
+        }], { returning: 'minimal' });
+      }
     }
 
-    function deleteComment(commentId){
-      state.comments=state.comments.filter(c=>c.id!=commentId);
-      render();
+    async function updateComment(commentId, updates){
+      const { error } = await sb.from('comments').update(updates).eq('id', commentId).select();
+      if(error) throw error;
     }
 
-    function toggleComment(commentId){
-      const c=state.comments.find(x=>x.id==commentId);
+    async function deleteComment(commentId){
+      const { error } = await sb.from('comments').delete().eq('id', commentId).select();
+      if(error) throw error;
+    }
+
+    async function toggleComment(commentId){
+      const c = state.comments.find(x=>x.id===commentId);
       if(!c) return;
-      updateComment(commentId,{hidden:!c.hidden,pinned:!c.hidden?false:c.pinned});
+      await updateComment(commentId, { hidden: !c.hidden, pinned: !c.hidden ? false : c.pinned });
     }
 
-    function pinComment(gameId, commentId){
-      state.comments=state.comments.map(c=>{
-        if(c.game_id!=gameId) return c;
-        if(c.id==commentId) return {...c,pinned:!c.pinned,hidden:false};
-        return {...c,pinned:false};
-      });
-      render();
+    async function pinComment(gameId, commentId){
+      const related = state.comments.filter(c=>c.game_id===gameId);
+      for(const c of related){
+        await updateComment(c.id, c.id===commentId ? { pinned: !c.pinned, hidden: false } : { pinned: false });
+      }
     }
 
-    function resetVotes(){
-      Object.keys(localStorage).filter(k=>k.startsWith('vote_')).forEach(k=>localStorage.removeItem(k));
-      Object.keys(localStorage).filter(k=>k.startsWith('vote_score_')).forEach(k=>localStorage.removeItem(k));
-      setStatus('Votes réinitialisés.', 'ok');
-    }
-
-    function setStatus(t,tone='info'){
-      const el=document.getElementById('status');
-      el.className='status '+tone;
-      el.textContent=t;
+    async function deleteGame(gameId){
+      const { error } = await sb.from('games').delete().eq('id', gameId).select();
+      if(error) throw error;
     }
 
     function render(){
@@ -322,37 +320,47 @@
       document.getElementById('pinnedComments').textContent=state.comments.filter(c=>c.pinned&&!c.hidden).length;
     }
 
-    state = demoData();
-    render();
-    setStatus('Données chargées.', 'ok');
-
     document.getElementById('searchInput').addEventListener('input', render);
-    document.getElementById('refreshBtn').addEventListener('click', ()=>{ render(); setStatus('Page rafraîchie.', 'ok'); });
-    document.getElementById('clearVotesBtn').addEventListener('click', resetVotes);
+    document.getElementById('refreshBtn').addEventListener('click', loadAll);
+    document.getElementById('clearStatusBtn').addEventListener('click', ()=>setStatus('Statut vidé.', 'info'));
 
-    document.getElementById('gameForm').addEventListener('submit', e=>{
+    document.getElementById('gameForm').addEventListener('submit', async e=>{
       e.preventDefault();
-      const name=document.getElementById('gameName').value.trim();
-      const genre=document.getElementById('gameGenre').value.trim();
-      const image_url=document.getElementById('gameImageUrl').value.trim();
-      const intro=document.getElementById('gameIntroComment').value.trim();
-      if(!name) return;
-      addGame(name, genre, image_url, intro);
-      e.target.reset();
-      setStatus('Jeu ajouté.', 'ok');
+      try{
+        const name=document.getElementById('gameName').value.trim();
+        const genre=document.getElementById('gameGenre').value.trim();
+        const image_url=document.getElementById('gameImageUrl').value.trim();
+        const intro=document.getElementById('gameIntroComment').value.trim();
+        if(!name) return;
+        await addGame(name, genre, image_url, intro);
+        e.target.reset();
+        await loadAll();
+        setStatus('Jeu ajouté et synchronisé.', 'ok');
+      }catch(err){
+        console.error(err);
+        setStatus('Erreur ajout jeu: '+err.message, 'error');
+      }
     });
 
-    document.addEventListener('click', e=>{
+    document.addEventListener('click', async e=>{
       const btn=e.target.closest('[data-action]');
       if(!btn) return;
       const action=btn.dataset.action;
       const commentId=Number(btn.dataset.commentId);
       const gameId=Number(btn.dataset.gameId);
-      if(action==='toggle') toggleComment(commentId);
-      if(action==='pin') pinComment(gameId, commentId);
-      if(action==='delete') deleteComment(commentId);
-      setStatus('Action enregistrée.', 'ok');
+      try{
+        if(action==='toggle') await toggleComment(commentId);
+        if(action==='pin') await pinComment(gameId, commentId);
+        if(action==='delete') await deleteComment(commentId);
+        await loadAll();
+        setStatus('Action enregistrée.', 'ok');
+      }catch(err){
+        console.error(err);
+        setStatus('Erreur admin: '+err.message, 'error');
+      }
     });
+
+    loadAll();
   </script>
 </body>
 </html>
