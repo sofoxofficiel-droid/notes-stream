@@ -69,6 +69,12 @@
     .star.active{color:#ffb33e;background:linear-gradient(180deg,#fff8e8,#ffe08a);box-shadow:0 8px 18px rgba(255,179,62,.25);border-color:rgba(255,179,62,.35)}
     .star:hover{transform:translateY(-2px) scale(1.04)}
     .vote-msg{min-height:24px;font-weight:700;color:var(--green);text-align:center}
+    .comment-form{display:grid;gap:.7rem;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(110,56,23,.09)}
+    .comment-form .row{display:grid;grid-template-columns:1fr auto;gap:.7rem;align-items:start}
+    .comment-form input,.comment-form textarea{width:100%;border:1px solid var(--border);border-radius:18px;padding:.95rem 1rem;background:#fff;font:inherit;outline:none}
+    .comment-form textarea{min-height:96px;resize:vertical}
+    .comment-form button{min-height:48px;border:none;border-radius:999px;padding:0 1.1rem;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;font-weight:800;cursor:pointer}
+    .comment-msg{min-height:22px;font-weight:700;color:var(--green)}
     .locked{opacity:.96}
     @media (max-width:1100px){.hero,.layout,.game-grid,.grid-form{grid-template-columns:1fr}.summary{position:static}}
     @media (max-width:700px){.stats-grid{grid-template-columns:1fr}.toolbar{flex-direction:column;align-items:stretch}.stars{justify-content:flex-start}}
@@ -164,6 +170,22 @@
         <p>${esc(c.text)}</p>
       </article>`;
     }
+    function commentForm(game){
+      return `<form class="comment-form" data-comment-form="${game.id}">
+        <div class="row">
+          <div>
+            <label class="meta">Ton pseudo</label>
+            <input name="author" maxlength="24" placeholder="Ex: Viewer" required>
+          </div>
+          <div style="min-width:160px">
+            <label class="meta">Commentaire</label>
+            <button type="submit">Envoyer</button>
+          </div>
+        </div>
+        <textarea name="text" maxlength="280" placeholder="Écris ton avis ici..." required></textarea>
+        <div class="comment-msg" data-comment-msg="${game.id}"></div>
+      </form>`;
+    }
     function gameMarkup(g){
       const s=avg(g.ratings);
       return `<article class="panel game-card" id="${g.slug}">
@@ -173,7 +195,7 @@
             <div class="game-head"><div><h3>${esc(g.name)}</h3><p class="meta">${esc(g.genre||'Découverte')}</p></div><div class="score-card"><strong>${s.toFixed(1)}/10</strong><span class="meta">${g.ratings.length} votes</span></div></div>
             <div class="tag-row"><span class="tag">${esc(g.genre||'Découverte')}</span><span class="tag">${g.comments.length} commentaire(s)</span></div>
             <section class="vote-area">${voteWidget(g)}</section>
-            <section class="comments">${g.comments.length?sortedComments(g.comments).map(c=>commentCard(g,c)).join(''):'<div class="comment">Pas encore de commentaire.</div>'}</section>
+            <section class="comments">${g.comments.length?sortedComments(g.comments).map(c=>commentCard(g,c)).join(''):'<div class="comment">Pas encore de commentaire.</div>'}${commentForm(g)}</section>
           </div>
         </div>
       </article>`;
@@ -204,6 +226,12 @@
         });
       });
     }
+    function addComment(gameId, author, text){
+      const payload={id:Date.now(),game_id:Number(gameId),author:author.trim()||'Viewer',text:text.trim(),created_at:new Date().toISOString(),hidden:false,pinned:false};
+      state.comments.unshift(payload);
+      render();
+      return payload;
+    }
     function render(){
       const q=document.getElementById('searchInput').value.trim().toLowerCase();
       const gs=grouped().filter(g=>`${g.name} ${g.genre||''}`.toLowerCase().includes(q));
@@ -218,6 +246,19 @@
     state = demoData();
     render();
     document.getElementById('searchInput').addEventListener('input', render);
+    document.addEventListener('submit', e=>{
+      const form=e.target.closest('[data-comment-form]');
+      if(!form) return;
+      e.preventDefault();
+      const gameId=form.getAttribute('data-comment-form');
+      const author=form.querySelector('[name=author]').value;
+      const text=form.querySelector('[name=text]').value;
+      const msg=document.querySelector('[data-comment-msg="'+gameId+'"]');
+      if(!author.trim() || !text.trim()){ if(msg) msg.textContent='Écris un pseudo et un commentaire.'; return; }
+      addComment(gameId, author, text);
+      form.reset();
+      if(msg) msg.textContent='Merci pour ton commentaire !';
+    });
   </script>
 </body>
 </html>
