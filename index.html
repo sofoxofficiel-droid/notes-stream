@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="warm">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes de stream</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--bg:#fff6ef;--bg2:#ffe3d1;--surface:rgba(255,255,255,.72);--surface-strong:#fffdfb;--border:rgba(110,56,23,.12);--text:#2a1810;--muted:#7c6053;--primary:#d6465d;--secondary:#ff8a3d;--gold:#ffcd6b;--green:#1f9d63;--orange:#ef8b1e;--red:#d94a4a;--shadow:0 18px 42px rgba(188,88,42,.12);--radius:24px;--font:'Inter',sans-serif;--display:'Outfit',sans-serif}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{min-height:100vh;background:radial-gradient(circle at top left, rgba(255,138,61,.25), transparent 28%),radial-gradient(circle at 85% 8%, rgba(214,70,93,.18), transparent 22%),linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font-family:var(--font);line-height:1.6}.container{width:min(1240px,calc(100% - 2rem));margin:auto}.panel{background:var(--surface);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:30px;box-shadow:var(--shadow)}header{position:sticky;top:0;z-index:30;background:rgba(255,246,239,.72);backdrop-filter:blur(14px);border-bottom:1px solid rgba(110,56,23,.08)}.nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;gap:1rem}.brand{display:flex;align-items:center;gap:.8rem}.logo{width:44px;height:44px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:grid;place-items:center;color:#fff;font-weight:800}.brand h1{font:800 1.25rem/1 var(--display)}.muted-btn,.primary-btn{min-height:44px;border-radius:999px;padding:0 1rem;cursor:pointer}.muted-btn{border:1px solid var(--border);background:#fff;color:var(--text)}.primary-btn{border:none;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}.hero,.layout,.stats-grid,.game-grid,.grid-form{display:grid;gap:1.2rem}.hero{grid-template-columns:1.15fr .85fr;padding:2rem 0 1.5rem}.hero-main,.hero-side,.toolbar,.game-card{padding:1.4rem}.eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.5rem .85rem;border-radius:999px;background:rgba(255,138,61,.12);color:#c24d09;font-weight:600;font-size:.9rem;margin-bottom:1rem}h2.hero-title{font:800 clamp(2.1rem,4.2vw,4rem)/.96 var(--display);max-width:12ch;margin-bottom:1rem;letter-spacing:-.04em}.lead{font-size:1.05rem;color:var(--muted);max-width:58ch}.hero-badges,.tag-row,.comment-head,.status-stack,.game-head,.summary-head{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:space-between;align-items:center}.hero-badge,.tag{padding:.48rem .8rem;border-radius:999px;background:#fff;border:1px solid var(--border);font-size:.88rem}.stats-grid{grid-template-columns:repeat(2,1fr)}.stat{background:var(--surface-strong);border:1px solid var(--border);border-radius:22px;padding:1rem}.stat strong{display:block;font:800 2rem/1 var(--display);margin-top:.3rem}.status{padding:1rem 1.1rem;border-radius:20px;border:1px solid var(--border);background:var(--surface-strong)}.info{color:#226cc3}.ok{color:var(--green)}.error{color:var(--red)}.layout{grid-template-columns:320px minmax(0,1fr);padding-bottom:3rem}.summary{position:sticky;top:92px;padding:1.2rem;height:max-content}.summary-list{list-style:none;display:grid;gap:.8rem;margin-top:1rem}.summary-link{display:flex;justify-content:space-between;align-items:center;gap:.75rem;padding:.95rem 1rem;border-radius:20px;border:1px solid var(--border);background:var(--surface-strong);text-decoration:none;color:inherit}.summary-name{font-weight:700;line-height:1.2;flex:1}.score-pill{padding:.34rem .65rem;border-radius:999px;font-size:.82rem;font-weight:800;min-width:68px;text-align:center;border:2px solid transparent}.score-green{background:rgba(31,157,99,.12);color:var(--green);border-color:rgba(31,157,99,.25)}.score-orange{background:rgba(239,139,30,.12);color:var(--orange);border-color:rgba(239,139,30,.25)}.score-red{background:rgba(217,74,74,.12);color:var(--red);border-color:rgba(217,74,74,.25)}.content{display:grid;gap:1rem}.toolbar{display:flex;align-items:center;gap:1rem;justify-content:space-between}.search{display:flex;align-items:center;gap:.75rem;min-height:52px;border:1px solid var(--border);border-radius:999px;background:#fff;padding:0 1rem;flex:1}.search input,.field input,.field textarea{width:100%;border:none;outline:none;background:transparent;color:inherit}.games{display:grid;gap:1.1rem}.game-card{scroll-margin-top:90px}.game-grid{grid-template-columns:250px minmax(0,1fr)}.cover{aspect-ratio:3/4;overflow:hidden;border-radius:24px;background:linear-gradient(160deg,var(--primary),var(--secondary));border:1px solid rgba(255,255,255,.6);box-shadow:0 18px 32px rgba(214,70,93,.14)}.cover img{width:100%;height:100%;object-fit:cover}.cover-fallback{width:100%;height:100%;display:grid;place-items:center;padding:1rem;text-align:center;color:#fff;font:800 1.55rem/1.1 var(--display)}.game-head h3{font:800 clamp(1.5rem,2vw,2rem)/1.02 var(--display);margin-bottom:.35rem}.meta{color:var(--muted)}.score-card{padding:1rem 1.1rem;border-radius:22px;background:linear-gradient(135deg,rgba(214,70,93,.12),rgba(255,138,61,.16));border:1px solid rgba(214,70,93,.14);min-width:130px}.score-card strong{display:block;font:800 2rem/1 var(--display)}.progress{height:11px;border-radius:999px;background:rgba(214,70,93,.08);overflow:hidden;border:1px solid rgba(214,70,93,.08);margin:.8rem 0 1rem}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--gold),var(--secondary))}.stars{display:flex;flex-wrap:wrap;gap:.55rem;margin:1rem 0}.star{width:48px;height:48px;border-radius:16px;border:1px solid var(--border);background:#fff;color:var(--orange);font-size:1.2rem;cursor:pointer;transition:transform .16s ease, box-shadow .16s ease}.star:hover{transform:translateY(-2px);box-shadow:0 12px 22px rgba(255,138,61,.16)}.comments{display:grid;gap:1rem;border-top:1px solid rgba(110,56,23,.09);margin-top:1rem;padding-top:1rem}.grid-form{grid-template-columns:repeat(2,minmax(0,1fr))}.field{display:grid;gap:.45rem}.field.full{grid-column:1/-1}.field input,.field textarea{background:#fff;border:1px solid var(--border);border-radius:20px;padding:1rem}.field textarea{min-height:110px;resize:vertical}.comment{padding:1rem;border-radius:22px;background:var(--surface-strong);border:1px solid var(--border)}.comment.pinned{border-color:rgba(255,205,107,.45);background:linear-gradient(180deg,rgba(255,205,107,.18),rgba(255,255,255,.6))}.badge{padding:.28rem .6rem;border-radius:999px;font-size:.76rem}.visible{background:rgba(31,157,99,.12);color:var(--green)}.pinned-badge{background:rgba(255,205,107,.18);color:#b87400}.empty{padding:1rem;border-radius:20px;border:1px dashed var(--border);color:var(--muted);background:rgba(255,255,255,.5)}@media (max-width:1080px){.hero,.layout,.game-grid,.grid-form{grid-template-columns:1fr}.summary{position:static}}@media (max-width:700px){.stats-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo">S</div><div><h1>Notes de stream</h1><div class="meta">Retrouve les jeux joués en live, les avis, les coups de cœur et l'ambiance de la soirée.</div></div></div>
+      <button class="muted-btn" id="refreshBtn" type="button">Actualiser</button>
+    </div>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <article class="panel hero-main">
+        <span class="eyebrow">Après le live, la discussion continue</span>
+        <h2 class="hero-title">Note les jeux joués en stream et partage ton ressenti.</h2>
+        <p class="lead">Retrouve les découvertes du stream, revis les moments forts, laisse une note, raconte ce que tu as aimé et aide à faire ressortir les jeux qui ont marqué la commu.</p>
+        <div class="hero-badges" style="margin-top:1rem;justify-content:flex-start;">
+          <span class="hero-badge">Ambiance stream & avis de la commu</span>
+          <span class="hero-badge">Notes visibles en direct</span>
+          <span class="hero-badge">Commentaires mis en avant</span>
+        </div>
+      </article>
+      <aside class="panel hero-side">
+        <div class="stats-grid">
+          <div class="stat"><small>Jeux suivis</small><strong id="totalGames">0</strong></div>
+          <div class="stat"><small>Votes de la commu</small><strong id="totalVotes">0</strong></div>
+          <div class="stat"><small>Commentaires visibles</small><strong id="totalComments">0</strong></div>
+          <div class="stat"><small>Messages mis en avant</small><strong id="pinnedComments">0</strong></div>
+        </div>
+      </aside>
+    </section>
+    <section class="panel" style="padding:1rem 1.2rem;margin-bottom:1rem;"><div class="status info" id="status">Connexion en cours...</div></section>
+    <section class="layout">
+      <aside class="panel summary">
+        <div class="summary-head"><div><h2>Sommaire</h2><div class="meta">Retrouve chaque jeu du stream en un clin d'œil.</div></div></div>
+        <ul class="summary-list" id="summaryList"></ul>
+      </aside>
+      <section class="content">
+        <section class="panel toolbar">
+          <label class="search" for="searchInput"><span>🔎</span><input id="searchInput" type="search" placeholder="Chercher un jeu, un style, une ambiance..."></label>
+        </section>
+        <div class="games" id="gamesList"></div>
+      </section>
+    </section>
+  </main>
+  <script>
+    const SUPABASE_URL = 'https://dpzorxmdblysdbebqkdw.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_nozWqfhiNgwyXnYLMngXHQ_KUvRgtZ6';
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const els = { status:document.getElementById('status'), summaryList:document.getElementById('summaryList'), gamesList:document.getElementById('gamesList'), totalGames:document.getElementById('totalGames'), totalVotes:document.getElementById('totalVotes'), totalComments:document.getElementById('totalComments'), pinnedComments:document.getElementById('pinnedComments'), searchInput:document.getElementById('searchInput'), refreshBtn:document.getElementById('refreshBtn') };
+    let store = { games: [], ratings: [], comments: [] };
+    function setStatus(text, tone='info'){ els.status.className = 'status '+tone; els.status.textContent = text; }
+    function esc(t){ return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function avg(a){ return a.length ? a.reduce((x,y)=>x+y,0)/a.length : 0; }
+    function fmt(iso){ return new Intl.DateTimeFormat('fr-FR',{dateStyle:'medium',timeStyle:'short'}).format(new Date(iso)); }
+    function grouped(){ return store.games.map(g => ({...g, ratings: store.ratings.filter(r=>r.game_id===g.id), comments: store.comments.filter(c=>c.game_id===g.id)})); }
+    function scoreClass(value){ if(value > 7) return 'score-green'; if(value > 5) return 'score-orange'; return 'score-red'; }
+    function sortComments(comments){ return [...comments].sort((a,b)=> a.pinned!==b.pinned ? (a.pinned?-1:1) : new Date(b.created_at)-new Date(a.created_at)); }
+    function summaryMarkup(game){ const score = avg(game.ratings.map(r=>r.score)); return `<li><a class="summary-link" href="#${game.slug}"><span class="summary-name">${esc(game.name)}</span><span class="score-pill ${scoreClass(score)}">${score.toFixed(1)}/10</span></a></li>`; }
+    function commentsMarkup(game){ if(!game.comments.length) return '<div class="empty">Pas encore de commentaire visible sur ce jeu.</div>'; return sortComments(game.comments).map(c => `<article class="comment ${c.pinned?'pinned':''}"><div class="comment-head"><div><strong>${esc(c.author)}</strong><div class="meta">${fmt(c.created_at)}</div></div><div class="status-stack"><span class="badge visible">Visible</span>${c.pinned?'<span class="badge pinned-badge">Mis en avant</span>':''}</div></div><p>${esc(c.text)}</p></article>`).join(''); }
+    function gameMarkup(game){ const score = avg(game.ratings.map(r=>r.score)); return `<article class="panel game-card" id="${game.slug}"><div class="game-grid"><div class="cover">${game.image_url?`<img src="${game.image_url}" alt="${esc(game.name)}">`:`<div class="cover-fallback">${esc(game.name)}</div>`}</div><div><div class="game-head"><div><h3>${esc(game.name)}</h3><p class="meta">${esc(game.genre||'Découverte du stream')}</p></div><div class="score-card"><strong>${score.toFixed(1)}/10</strong><span class="meta">${game.ratings.length} votes</span></div></div><div class="progress"><span style="width:${Math.max(0,Math.min(100,score*10))}%"></span></div><div class="tag-row"><span class="tag">${esc(game.genre||'Découverte')}</span><span class="tag">${game.comments.length} commentaire(s)</span></div><div class="stars">${Array.from({length:10},(_,i)=>`<button class="star" data-id="${game.id}" data-score="${i+1}" type="button">★</button>`).join('')}</div><section class="comments"><form class="grid-form" data-comment-form="${game.id}"><div class="field"><label>Pseudo</label><input name="author" type="text" maxlength="24" placeholder="Ton pseudo" required></div><div class="field"><label>Date / heure</label><input name="date" type="datetime-local"></div><div class="field full"><label>Ton avis</label><textarea name="comment" placeholder="Dis ce que tu as ressenti sur ce jeu, ce qui t'a marqué, ou ce que tu aimerais revoir en stream."></textarea></div><div class="field full"><button class="primary-btn" type="submit">Publier mon commentaire</button></div></form>${commentsMarkup(game)}</section></div></div></article>`; }
+    function render(){ const q = els.searchInput.value.trim().toLowerCase(); const filtered = grouped().filter(g => `${g.name} ${g.genre||''}`.toLowerCase().includes(q)); els.summaryList.innerHTML = filtered.map(summaryMarkup).join(''); els.gamesList.innerHTML = filtered.map(gameMarkup).join(''); els.totalGames.textContent = store.games.length; els.totalVotes.textContent = store.ratings.length; els.totalComments.textContent = store.comments.length; els.pinnedComments.textContent = store.comments.filter(c=>c.pinned).length; }
+    async function loadData(){ try { setStatus('Chargement des jeux et des notes...', 'info'); const [{data:games,error:gErr},{data:ratings,error:rErr},{data:comments,error:cErr}] = await Promise.all([sb.from('games').select('*').order('created_at',{ascending:false}), sb.from('ratings').select('*'), sb.from('comments').select('*').eq('hidden', false)]); if(gErr||rErr||cErr) throw new Error(gErr?.message||rErr?.message||cErr?.message); store = { games:games||[], ratings:ratings||[], comments:comments||[] }; render(); setStatus('Les notes du stream sont à jour.', 'ok'); } catch(err){ setStatus('Erreur : '+err.message, 'error'); console.error(err); } }
+    async function addRating(gameId, score){ try { const { error } = await sb.from('ratings').insert([{ game_id: gameId, score }]); if(error) throw error; await loadData(); setStatus('Merci, ta note a été prise en compte.', 'ok'); } catch(err){ setStatus('Erreur note : '+err.message, 'error'); } }
+    async function addComment(gameId, author, text, dateValue){ try { const payload = { game_id: gameId, author, text, hidden:false, pinned:false, created_at: dateValue ? new Date(dateValue).toISOString() : new Date().toISOString() }; const { error } = await sb.from('comments').insert([payload]); if(error) throw error; await loadData(); setStatus('Ton commentaire a bien été publié.', 'ok'); } catch(err){ setStatus('Erreur commentaire : '+err.message, 'error'); } }
+    document.addEventListener('click', e => { const star = e.target.closest('.star'); if(star) addRating(star.dataset.id, Number(star.dataset.score)); });
+    document.addEventListener('submit', e => { const form = e.target.closest('[data-comment-form]'); if(!form) return; e.preventDefault(); const author = form.querySelector('[name="author"]').value.trim(); const dateValue = form.querySelector('[name="date"]').value; const text = form.querySelector('[name="comment"]').value.trim(); if(author && text) addComment(form.getAttribute('data-comment-form'), author, text, dateValue); form.reset(); });
+    els.searchInput.addEventListener('input', render); els.refreshBtn.addEventListener('click', loadData);
+    sb.channel('viewer-v2-realtime').on('postgres_changes',{event:'*',schema:'public',table:'games'},loadData).on('postgres_changes',{event:'*',schema:'public',table:'ratings'},loadData).on('postgres_changes',{event:'*',schema:'public',table:'comments'},loadData).subscribe();
+    loadData();
+  </script>
+</body>
+</html>
